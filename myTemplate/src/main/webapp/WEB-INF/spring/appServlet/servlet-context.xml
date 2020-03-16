@@ -23,6 +23,17 @@
 	
 	<context:component-scan base-package="com.my.template" />
 	
-	
+    <!-- interceptor 프로그램 등록 -->
+    <beans:bean id="LoginInterceptor" class="com.my.common.interceptor.LoginInterceptor" />
+
+    <interceptors>
+        <interceptor>
+            <mapping path="/**"/>
+            <exclude-mapping path="/"/>
+            <exclude-mapping path="/index.do"/>
+            <exclude-mapping path="/resources/**"/>
+            <beans:ref bean="LoginInterceptor"/>
+        </interceptor>
+    </interceptors>	
 	
 </beans:beans>
