@@ -20,9 +20,10 @@
     <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
         <constructor-arg ref="dataSourceOrigin" />
         <property name="logFormatter">
-            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+            <bean class="com.my.common.log.Log4JdbcCustomFormatter">
                 <property name="loggingType" value="MULTI_LINE" /><!-- 여러줄에 출력하려고 하시면 코멘트 해제 -->
-                <property name="sqlPrefix" value="SQL         : " />
+                <property name="margin" value="8" />
+                <property name="sqlPrefix" value="SQL : " />
             </bean>
         </property>
     </bean>
