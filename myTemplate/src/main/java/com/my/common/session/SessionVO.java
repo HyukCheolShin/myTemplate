@@ -11,13 +11,13 @@ public class SessionVO implements Serializable{
     private String userNm;
 
     public SessionVO(Map<String, String> loginMap) {
-        this.userId = loginMap.get("userid");
-        this.userNm = loginMap.get("name");
+        this.userId = loginMap.get("userId");
+        this.userNm = loginMap.get("userNm");
     }
 
     public void changeSessionVO(Map<String, String> loginMap) {
-            this.userId = loginMap.get("userid");
-            this.userNm = loginMap.get("name");
+            this.userId = loginMap.get("userId");
+            this.userNm = loginMap.get("userNm");
     }
 
     public String getUserId() {
