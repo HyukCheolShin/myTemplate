@@ -31,6 +31,8 @@
             <mapping path="/**"/>
             <exclude-mapping path="/"/>
             <exclude-mapping path="/index.do"/>
+            <exclude-mapping path="/login.do"/>
+            <exclude-mapping path="/sessionExpire.do"/>
             <exclude-mapping path="/resources/**"/>
             <beans:ref bean="LoginInterceptor"/>
         </interceptor>

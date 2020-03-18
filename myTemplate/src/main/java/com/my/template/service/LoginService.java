@@ -17,13 +17,15 @@ public class LoginService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass().getName());
 
-    public Map<String, String> dbTest( Map<?, ?> param) throws Exception {
-        try {
-            Map<String, String> dbTestMap = loginMapper.dbTest(param);
-            return dbTestMap;
-        } catch(Exception e) {
-            LOGGER.error(" LoginService Exception===============>" + e);
-            return null;
-        }
-    }
+	public Map<String, String> login(Map<String, ?> param) throws Exception {
+        LOGGER.debug(" LoginService login param ===============>" + param);
+		try {
+			Map<String, String> loginMap = loginMapper.login(param);
+
+			return loginMap;
+		} catch(Exception e) {
+			LOGGER.error(" LoginService login Exception===============>" + e);
+			return null;
+		}
+	}
 }
