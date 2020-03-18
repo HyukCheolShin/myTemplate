@@ -18,12 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.my.common.session.SessionUtil;
 import com.my.common.session.SessionVO;
+import com.my.common.util.MessageUtil;
 import com.my.template.service.LoginService;
 
 @Controller
 public class LoginController {
 
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass().getName());
+
+    @Autowired
+    private MessageUtil messageUtil;
 
     @Autowired
     private LoginService loginService;
@@ -39,16 +43,16 @@ public class LoginController {
      * @param Locale
      * @throws Exception
      */
-	@RequestMapping(value = { "/", "/index.do" })
-	public String index(@RequestParam Map<String, String> paramMap,  ModelMap modelMap, HttpSession session, Locale lang) throws Exception {
+    @RequestMapping(value = { "/", "/index.do" })
+    public String index(@RequestParam Map<String, String> paramMap,  ModelMap modelMap, HttpSession session, Locale lang) throws Exception {
         SessionVO sessionVO = (SessionVO)session.getAttribute("sessionVO");
 
         if(sessionVO!=null) {
             modelMap.put("sessionUserId", sessionVO.getUserId());
         }
 
-		return "login";
-	}
+        return "login";
+    }
 
     /**
      * 로그인
@@ -61,28 +65,28 @@ public class LoginController {
     @RequestMapping(value="/login.do")
     public String login(@RequestParam Map<String, ?> paramMap, ModelMap modelMap, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
-    	LOGGER.debug("login.do paramMap =====> " + paramMap);
+        LOGGER.debug("login.do paramMap =====> " + paramMap);
 
         try {
 
-        	Map<String, String> loginMap = loginService.login(paramMap);
-    		LOGGER.debug("loginMap =====> " + loginMap);
+            Map<String, String> loginMap = loginService.login(paramMap);
+            LOGGER.debug("loginMap =====> " + loginMap);
 
-    		if(loginMap!=null && !"".equals(loginMap.get("userId"))) {
-    			SessionUtil.setSession(loginMap, req, res);
-    		} else {
+            if(loginMap!=null && !"".equals(loginMap.get("userId"))) {
+                SessionUtil.setSession(loginMap, req, res);
+            } else {
                 throw new Exception("LOGIN_01");
             }
 
-    		modelMap.put("url", servletContextPath+"/loginConfirm.do");
+            modelMap.put("url", servletContextPath+"/loginConfirm.do");
 
-        	return "forward";
+            return "forward";
         } catch(Exception e) {
             String errCd = e.getMessage();
             LOGGER.error("login Exception errCd==>" + errCd);
-            String returnMsg = "로그인을 실패하였습니다.";
+            String returnMsg = messageUtil.getMessage("login.message.loginFailed");
             if(errCd!=null && errCd.equals("LOGIN_01")) {
-                returnMsg = "아이디 혹은 비밀번호가 일치하지 않습니다.";
+                returnMsg = messageUtil.getMessage("login.message.doNotMatch");
             }
 
             modelMap.put("message", returnMsg);
@@ -108,8 +112,8 @@ public class LoginController {
         if(sessionVO!=null) {
             rtnPage = "main";
         } else {
-        	modelMap.put("url", servletContextPath+"/logout.do");
-        	rtnPage = "forward";
+            modelMap.put("url", servletContextPath+"/logout.do");
+            rtnPage = "forward";
         }
 
         return rtnPage;
