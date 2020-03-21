@@ -33,6 +33,16 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>appServlet</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>appServlet</servlet-name>
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
+
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
