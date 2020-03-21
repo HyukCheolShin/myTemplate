@@ -17,6 +17,19 @@ public class LoginService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass().getName());
 
+	public Map<String, String> loginUserValidation(Map<String, Object> param) throws Exception {
+        LOGGER.debug(" LoginService loginUserValidation param ===============>" + param);
+
+		try {
+			Map<String, String> resultMap = loginMapper.loginUserValidation(param);
+			return resultMap;
+		} catch(Exception e) {
+
+			LOGGER.error(" LoginService loginUserValidation Exception===============>" + e);
+			return null;
+		}
+	}
+
 	public Map<String, String> login(Map<String, ?> param) throws Exception {
         LOGGER.debug(" LoginService login param ===============>" + param);
 		try {

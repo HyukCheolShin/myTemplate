@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+
 </head>
 <body>
 <form id="loginForm" name="loginForm">
@@ -21,6 +23,9 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="/resources/js/common/common.js"></script>
+<script type="text/javascript" src="/resources/js/common/util.js"></script>
+
 <script>
 
     var inputText = "<spring:message code='common.message.inputText'/>";    // {0}을(를) 입력하여 주십시오.
@@ -31,15 +36,6 @@
     }
 
     $(document).ready(function() {
-
-    	function simpleAlert(alertMsg) {
-        	$.alert({
-        	    title: '',
-        	    content: alertMsg,
-        	    useBootstrap: false,
-        	    boxWidth: '400px'
-        	});    		
-    	}
 
         function check_validation() {
             form = document.loginForm;
@@ -63,11 +59,28 @@
                 return false;
             }
 
-            form = document.loginForm;
-            form.method = "post";
-            form.action = "<c:url value='/login.do'/>";
-            form.submit();
-
+            $.ajax({
+                url : '<c:url value="/" />loginUserValidation.json',
+                data : JSON.stringify($('#loginForm').serializeForm()),
+                type : 'post',
+                dataType : 'json',
+                contentType : "application/json; charset=UTF-8",
+                success : function(data) {
+                	console.log(JSON.stringify(data,null,4));
+                    if(data.returnCd == "Y") {
+                        form = document.loginForm;
+                        form.method = "post";
+                        form.action = "<c:url value='/login.do'/>";
+                        form.submit();
+                    } else if(data.returnCd == "NOT_FOUND_USER") {
+                    	simpleAlert('<spring:message code="login.message.userIdNotFound"/>', 'error');
+                    	return false;
+                    } else {
+                    	simpleAlert('<spring:message code="login.message.loginFailed"/>', 'error');
+                    	return false;
+                    }
+                }
+            });
     	})
     });
 </script>

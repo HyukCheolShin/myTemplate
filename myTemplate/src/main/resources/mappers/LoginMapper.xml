@@ -3,6 +3,15 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.my.template.mapper.LoginMapper">
+
+    <select id="loginUserValidation" parameterType="Map" resultType="com.my.common.db.ResultMap">
+		SELECT USER_ID
+		     , USER_NM
+		  FROM USER
+         WHERE USER_ID = #{userId}
+           AND USE_YN = 'Y';
+    </select>
+
     <select id="login" parameterType="Map" resultType="com.my.common.db.ResultMap">
 		SELECT USER_ID
 		     , USER_NM

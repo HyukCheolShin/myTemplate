@@ -1,5 +1,6 @@
 package com.my.template.controller;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -13,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.my.common.session.SessionUtil;
 import com.my.common.session.SessionVO;
@@ -55,6 +58,31 @@ public class LoginController {
     }
 
     /**
+     * 사용자 체크
+     * @param map
+     * @param sessionVO
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/loginUserValidation.json")
+    public @ResponseBody Map<String, String> loginUserValidation(@RequestBody Map<String, Object> map) throws Exception {
+
+    	LOGGER.debug("loginUserValidation.do map =====> " + map);
+
+    	Map<String, String> rtnMap = new HashMap<String, String>();
+
+    	Map<String, String> resultMap = loginService.loginUserValidation(map);
+
+    	if(resultMap!=null) {
+    		rtnMap.put("returnCd", "Y");
+    	} else {
+    		rtnMap.put("returnCd", "NOT_FOUND_USER");
+    	}
+
+        return rtnMap;
+    }
+
+    /**
      * 로그인
      * @param RequestParam
      * @param ModelMap
@@ -86,7 +114,7 @@ public class LoginController {
             LOGGER.error("login Exception errCd==>" + errCd);
             String returnMsg = messageUtil.getMessage("login.message.loginFailed");
             if(errCd!=null && errCd.equals("LOGIN_01")) {
-                returnMsg = messageUtil.getMessage("login.message.doNotMatch");
+                returnMsg = messageUtil.getMessage("login.message.passwordsDoNotMatch");
             }
 
             modelMap.put("message", returnMsg);

@@ -6,5 +6,6 @@ import org.mybatis.spring.annotation.MapperScan;
 
 @MapperScan
 public interface LoginMapper {
+	Map<String, String> loginUserValidation(Map<String, Object> param) throws Exception;
 	Map<String, String> login(Map<String, ?> param) throws Exception;
 }
