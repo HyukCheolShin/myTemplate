@@ -53,6 +53,7 @@
             <exclude-mapping path="/login.do"/>
             <exclude-mapping path="/sessionExpire.do"/>
             <exclude-mapping path="/loginUserValidation.json"/>
+            <exclude-mapping path="/common/ajaxCommon.do"/>
             <exclude-mapping path="/resources/**"/>
             <beans:ref bean="LoginInterceptor"/>
         </interceptor>

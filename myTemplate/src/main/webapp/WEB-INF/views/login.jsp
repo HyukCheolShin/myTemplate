@@ -26,6 +26,8 @@
 <script type="text/javascript" src="/resources/js/common/common.js"></script>
 <script type="text/javascript" src="/resources/js/common/util.js"></script>
 
+<jsp:include page="/common/ajaxCommon.do" />
+
 <script>
 
     var inputText = "<spring:message code='common.message.inputText'/>";    // {0}을(를) 입력하여 주십시오.
@@ -59,14 +61,10 @@
                 return false;
             }
 
-            $.ajax({
-                url : '<c:url value="/" />loginUserValidation.json',
-                data : JSON.stringify($('#loginForm').serializeForm()),
-                type : 'post',
-                dataType : 'json',
-                contentType : "application/json; charset=UTF-8",
-                success : function(data) {
-                	console.log(JSON.stringify(data,null,4));
+	        ajax.json(
+	        	'<c:url value="/"/>loginUserValidation.json',
+	        	JSON.stringify($('#loginForm').serializeForm()),
+	            function(data) {
                     if(data.returnCd == "Y") {
                         form = document.loginForm;
                         form.method = "post";
@@ -79,8 +77,8 @@
                     	simpleAlert('<spring:message code="login.message.loginFailed"/>', 'error');
                     	return false;
                     }
-                }
-            });
+	            }
+            );
     	})
     });
 </script>
