@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,9 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+	BCryptPasswordEncoder bcryptPasswordEncoder;
 
     @Value("#{servletContext.contextPath}")
     private String servletContextPath;
@@ -101,9 +105,16 @@ public class LoginController {
             LOGGER.debug("loginMap =====> " + loginMap);
 
             if(loginMap!=null && !"".equals(loginMap.get("userId"))) {
-                SessionUtil.setSession(loginMap, req, res);
+            	String userPassword = (String) paramMap.get("userPassword");
+                String dbUserPassword = (String) loginMap.get("userPassword");
+
+                if(bcryptPasswordEncoder.matches(userPassword, dbUserPassword)) {
+                	SessionUtil.setSession(loginMap, req, res);
+                } else {
+                	throw new Exception("PASSWORD_DO_NOT_MATCH");
+                }
             } else {
-                throw new Exception("LOGIN_01");
+                throw new Exception("NOT_FOUND_USER");
             }
 
             modelMap.put("url", servletContextPath+"/loginConfirm.do");
@@ -113,7 +124,9 @@ public class LoginController {
             String errCd = e.getMessage();
             LOGGER.error("login Exception errCd==>" + errCd);
             String returnMsg = messageUtil.getMessage("login.message.loginFailed");
-            if(errCd!=null && errCd.equals("LOGIN_01")) {
+            if(errCd!=null && errCd.equals("NOT_FOUND_USER")) {
+                returnMsg = messageUtil.getMessage("login.message.userIdNotFound");
+            } else if(errCd!=null && errCd.equals("PASSWORD_DO_NOT_MATCH")) {
                 returnMsg = messageUtil.getMessage("login.message.passwordsDoNotMatch");
             }
 

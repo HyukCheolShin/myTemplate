@@ -15,9 +15,9 @@
     <select id="login" parameterType="Map" resultType="com.my.common.db.ResultMap">
 		SELECT USER_ID
 		     , USER_NM
+             , USER_PASSWORD
 		  FROM USER
          WHERE USER_ID = #{userId}
-           AND USER_PASSWORD = #{userPassword}
            AND USE_YN = 'Y';
     </select>
 </mapper>

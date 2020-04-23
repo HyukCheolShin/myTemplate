@@ -10,7 +10,8 @@
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
 		<java-version>11</java-version>
-		<org.springframework-version>5.2.4.RELEASE</org.springframework-version>
+		<org.springframework-version>5.2.5.RELEASE</org.springframework-version>
+		<org.springsecurity-version>5.3.1.RELEASE</org.springsecurity-version>
 		<org.aspectj-version>1.9.5</org.aspectj-version>
 		<org.slf4j-version>1.7.30</org.slf4j-version>
 		<logback-version>1.2.3</logback-version>
@@ -35,6 +36,13 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+
+        <!-- Spring Security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${org.springsecurity-version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
