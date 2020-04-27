@@ -46,7 +46,10 @@ var ajax = {
 	                async : setAsync, // false면 순차적 실행
 	                contentType : "application/json; charset=UTF-8",
 	                success : function(data) {
-	                    if( data && data.exceptionMsg ){
+	                	if(data && data.sessionValidYn == "N") {
+                            checkSession(data);
+                            return false;
+                        } else if(data && data.exceptionMsg) {
 	                        simpleAlert(data.exceptionMsg, 'error');
 	                    } else {
 	                        try {
@@ -85,4 +88,33 @@ var ajax = {
 	        });
 	    }
 	}
+
+function checkSession(data) {
+
+    if(checkUndefined(data)) {
+        return true;
+    }
+
+    if(data.sessionValidYn == "N") {
+        $.confirm({
+            title: '<spring:message code="common.text.notification"/>',
+            content: '<spring:message code="login.message.sessionExpired" />',
+            icon: "fa fa-info",
+            type: "orange",
+            useBootstrap: false,
+            boxWidth: "400px",
+            autoClose: "moveLogin|10000",
+            buttons: {
+                moveLogin: {
+                    text: '<spring:message code="common.text.confirm"/>',
+                    action: function() {
+                        top.location.href = '<c:url value="/sessionExpire.do"/>';
+                        return false;
+                    }
+                }
+            }
+        });
+    }
+    return true;
+}
 </script>
