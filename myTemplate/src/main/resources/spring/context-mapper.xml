@@ -7,8 +7,17 @@
 
     <mybatis:scan base-package="com.my" />
 
+    <!-- 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="mapperLocations" value="classpath*:mappers/*Mapper.xml" />
+    </bean>
+    -->
+
+    <!-- mapper 자동 적용을 위한 Custom RefreshableSqlSessionFactoryBean을 사용(개발시에만 사용 권장) -->
+    <bean id="sqlSessionFactory" class="com.my.common.db.RefreshableSqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath*:mappers/*Mapper.xml" />
+        <property name="interval" value="1000" />
     </bean>
 </beans>
