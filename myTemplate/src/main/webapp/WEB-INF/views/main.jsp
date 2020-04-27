@@ -5,19 +5,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MyTemplate Main</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>MyTemplate Main</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<jsp:include page="/common/header.do" />
+
 </head>
 <body>
+    <a href="#" id="logout">logout</a>
+</body>
 
-    <button onclick="logout()">logout</button>
+<jsp:include page="/common/jsCommon.do" />
+<jsp:include page="/common/ajaxCommon.do" />
 
 <script>
-    function logout() {
-    	top.location.href = '<c:url value="/logout.do"/>';
-    }
+$(document).ready(function() {
+    $("#logout").click(function(e){
+        e.preventDefault();
+
+        top.location.href = '<c:url value="/logout.do"/>';
+    });
+});
 </script>
-</body>
 </html>

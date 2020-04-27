@@ -17,6 +17,16 @@ public class CommonController {
     /********************************************************************************************************************
      * 공통 include
      ********************************************************************************************************************/      
+    @RequestMapping(value="/header.do")
+    public String header() throws Exception {
+    	return "include/header";
+    }
+
+    @RequestMapping(value="/jsCommon.do")
+    public String jsCommon() throws Exception {
+    	return "include/jsCommon";
+    }
+
     @RequestMapping(value="/ajaxCommon.do")
     public String ajaxCommon() throws Exception {
     	return "include/ajaxCommon";
