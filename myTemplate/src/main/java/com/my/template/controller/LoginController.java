@@ -110,13 +110,15 @@ public class LoginController {
 
                 if(bcryptPasswordEncoder.matches(userPassword, dbUserPassword)) {
                 	SessionUtil.setSession(loginMap, req, res);
+
+                	loginMap.put("sessionId", req.getSession().getId());
+                	loginService.insertLoginLog(loginMap);
                 } else {
                 	throw new Exception("PASSWORD_DO_NOT_MATCH");
                 }
             } else {
                 throw new Exception("NOT_FOUND_USER");
             }
-
             modelMap.put("url", servletContextPath+"/loginConfirm.do");
 
             return "forward";
@@ -169,9 +171,11 @@ public class LoginController {
     @RequestMapping(value="/logout.do")
     public String logout(HttpServletRequest req, ModelMap modelMap) throws Exception {
         HttpSession session = req.getSession(false);
+
         if( session != null ) {
             session.invalidate();
         }
+
         return "logout";
     }
 
@@ -191,4 +195,5 @@ public class LoginController {
         modelMap.put("url", servletContextPath+"/index.do");
         return "forward";
     }
+
 }

@@ -41,4 +41,14 @@ public class LoginService {
 			return null;
 		}
 	}
+
+	public void insertLoginLog(Map<String, ?> param) throws Exception {
+		LOGGER.debug(" LoginService insertLoginLog param ===============>" + param);
+		try {
+			loginMapper.insertLoginLog(param);
+		} catch(Exception e) {
+			LOGGER.error(" LoginService insertLoginLog Exception===============>" + e);
+		}
+	}
+
 }

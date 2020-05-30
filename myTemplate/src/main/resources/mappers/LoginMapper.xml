@@ -20,4 +20,15 @@
          WHERE USER_ID = #{userId}
            AND USE_YN = 'Y';
     </select>
+
+    <insert id="insertLoginLog" parameterType="Map">
+        INSERT
+          INTO ACCESS_LOG (USER_ID, SESSION_ID, LOGIN_DATE)
+        VALUES (
+               #{userId}
+             , #{sessionId}
+             , SYSDATE()
+               )
+    </insert>
+
 </mapper>
